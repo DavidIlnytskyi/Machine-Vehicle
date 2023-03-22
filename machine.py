@@ -15,7 +15,6 @@ class VendingMachine:
         self.text2_count = text2[0]
         self.text2_price = text2[1]
 
-
 class TextMachine(VendingMachine):
     def __init__(self, text1, text2):
         super().__init__(text1, text2)
@@ -31,6 +30,9 @@ class TextMachine(VendingMachine):
             return f"Text Machine:<{self.text2_count} texts; ₴{self.text2_price/100} each>"
         elif self.text1_count != 0 and self.text2_count == 0:
             return f"Text Machine:<{self.text1_count} texts; ₴{self.text1_price/100} each>"
+
+    def still_owe(self):
+            return (self.text1_price, self.text2_price)
 
     def texts_count(self) -> Tuple[int, int]:
         """
@@ -55,6 +57,29 @@ class TextMachine(VendingMachine):
         """
         self.text1_count = text[0]
         self.text2_count = text[1]
+
+    def insert_money(self, info):
+        amount_of_money = info[0]
+        text_type = info[1]
+        self.change += amount_of_money
+
+        if text_type == 'short':
+            if self.change >= self.text1_price:
+                self.text1_count -= self.change//self.text1_price
+                return ('Got a text', self.change)
+            money = str(round((self.text1_price-self.change)/100, 3))
+            line = money.split('.')
+            if len(line[1]) == 1:
+                money += '0'
+            return (f"Still owe ₴{money}", self.change)
+
+        if text_type == 'long':
+
+            money = str(round((self.text2_price-self.change)/100, 3))
+            line = money.split('.')
+            if len(line[1]) == 1:
+                money += '0'
+            return (f"Still owe ₴{money}", self.change)
 
     def __eq__(self, other) -> bool:
         if all([type(self) == TextMachine, type(other) == TextMachine]):
