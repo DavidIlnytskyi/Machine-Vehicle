@@ -53,11 +53,11 @@ class TextMachine(VendingMachine):
 
     def stock_machine(self, text: Tuple[int, int]) -> None:
         """
-        Add something tpo machine
+        Fill machine with texts
         :return: Nothing
         """
-        self.text1_count = text[0]
-        self.text2_count = text[1]
+        self.text1_count += text[0]
+        self.text2_count += text[1]
 
     def __eq__(self, other) -> bool:
         if all([type(self) == TextMachine, type(other) == TextMachine]):
