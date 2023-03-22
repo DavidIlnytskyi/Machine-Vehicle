@@ -32,6 +32,9 @@ class TextMachine(VendingMachine):
         elif self.text1_count != 0 and self.text2_count == 0:
             return f"Text Machine:<{self.text1_count} texts; ₴{self.text1_price/100} each>"
 
+    def still_owe(self):
+            return (self.text1_price, self.text2_price)        
+
     def texts_count(self) -> Tuple[int, int]:
         """
         Count texts in VendingMachine
