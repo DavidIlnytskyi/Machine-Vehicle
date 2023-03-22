@@ -50,7 +50,29 @@ class TextMachine(VendingMachine):
         if self.texts_count() == (0, 0):
             return True
         return False
+     def insert_money(self, info):
+        amount_of_money = info[0]
+        text_type = info[1]
+        self.change += amount_of_money
+        
+        if text_type == 'short':
+            if self.change >= self.text1_price:
+                self.text1_text -= self.change//self.text1_price
+                return ('Got a text', self.change)
+            money = str(round((self.text1_price-self.change)/100, 3))
+            line = money.split('.')
+            if len(line[1]) == 1:
+                money += '0'
+            return (f"Still owe ₴{money}", self.change)
 
+        if text_type == 'long':
+            
+            money = str(round((self.text2_price-self.change)/100, 3))
+            line = money.split('.')
+            if len(line[1]) == 1:
+                money += '0'
+            return (f"Still owe ₴{money}", self.change)
+     
     def stock_machine(self, text: Tuple[int, int]) -> None:
         """
         Fill machine with texts
