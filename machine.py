@@ -62,20 +62,25 @@ class TextMachine(VendingMachine):
         amount_of_money = info[0]
         text_type = info[1]
         self.change += amount_of_money
-
         if text_type == 'short':
+            self.text1_price -= amount_of_money
             if self.change >= self.text1_price:
-                self.text1_count -= self.change//self.text1_price
-                return ('Got a text', self.change)
-            money = str(round((self.text1_price-self.change)/100, 3))
+                self.text1_text -= 1
+                return ('Got a text!', self.change)
+
+            money = str(round((self.text1_price)/100, 3))
             line = money.split('.')
             if len(line[1]) == 1:
                 money += '0'
             return (f"Still owe ₴{money}", self.change)
 
         if text_type == 'long':
-
-            money = str(round((self.text2_price-self.change)/100, 3))
+            self.text2_price -= amount_of_money
+            if self.change >= self.text2_price:
+                self.text2_text -= 1
+                return ('Got a text!', self.change)
+            self.text1_price -= amount_of_money
+            money = str(round((self.text2_price)/100, 3))
             line = money.split('.')
             if len(line[1]) == 1:
                 money += '0'
